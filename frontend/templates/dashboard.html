@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Podcast Dashboard</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #121212;
+    color: white;
+}
+
+/* Layout */
+.dashboard {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 230px;
+    background: #000;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: #1DB954;
+}
+
+.nav-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background: #181818;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    background: #333;
+}
+
+.nav-btn.active {
+    background: #1DB954;
+    color: black;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.header {
+    font-size: 26px;
+    font-weight: bold;
+    color: #1DB954;
+}
+
+/* Cards */
+.card {
+    background: #181818;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background: #282828;
+    color: white;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: 2px solid #1DB954;
+}
+
+/* Select */
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background: #282828;
+    color: white;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: 2px solid #1DB954;
+}
+
+/* Buttons */
+.btn {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background: #1DB954;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #1ed760;
+}
+
+.btn-secondary {
+    background: #282828;
+}
+
+.btn-secondary:hover {
+    background: #333;
+}
+
+/* Audio */
+.audio-player {
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* Loader */
+.loader {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.wave {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.wave span {
+    width: 5px;
+    height: 20px;
+    background: #1DB954;
+    animation: wave 1s infinite;
+}
+
+.wave span:nth-child(2) { animation-delay: 0.2s; }
+.wave span:nth-child(3) { animation-delay: 0.4s; }
+.wave span:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes wave {
+    0%, 100% { height: 10px; }
+    50% { height: 30px; }
+}
+
+/* Script Style */
+.script-box {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.host {
+    align-self: flex-start;
+    background: #1DB954;
+    color: black;
+    padding: 12px 14px;
+    border-radius: 15px 15px 15px 5px;
+    max-width: 70%;
+}
+
+.guest {
+    align-self: flex-end;
+    background: #2a2a2a;
+    color: white;
+    padding: 12px 14px;
+    border-radius: 15px 15px 5px 15px;
+    max-width: 70%;
+}
+
+.label {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-bottom: 4px;
+}
+
+/* Download */
+.download-btn {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #1DB954;
+    color: white;
+    cursor: pointer;
+    width: auto;
+}
+
+/* History Cards */
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.history-card {
+    background: #181818;
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.history-card:hover {
+    background: #282828;
+}
+
+.history-card h4 {
+    margin: 0 0 8px 0;
+    color: #1DB954;
+}
+
+.history-card .category {
+    font-size: 12px;
+    background: #282828;
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.history-card .topic {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 8px;
+}
+
+.history-card .date {
+    font-size: 11px;
+    opacity: 0.5;
+    margin-top: 10px;
+}
+
+/* Hidden */
+.hidden { display: none; }
+
+/* Status */
+#status {
+    margin-top: 15px;
+    color: #ff6b6b;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>🎧 AI Podcast</h2>
+    <button class="nav-btn active" id="btnHome" onclick="showHome()">🏠 Home</button>
+    <button class="nav-btn" id="btnHistory" onclick="showHistory()">📋 History</button>
+    <button class="nav-btn" onclick="logout()">🚪 Logout</button>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+<!-- HOME VIEW -->
+<div id="homeView">
+    <div class="header">Create Podcast ✨</div>
+
+    <div class="card">
+        <h3>New Episode</h3>
+        <form id="podcastForm">
+            <div class="form-group">
+                <label>Title *</label>
+                <input type="text" id="title" placeholder="Enter podcast title..." required>
+            </div>
+            <div class="form-group">
+                <label>Category *</label>
+                <select id="category" required>
+                    <option value="">Select category...</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Business">Business</option>
+                    <option value="Health">Health</option>
+                    <option value="Education">Education</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Science">Science</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Topic *</label>
+                <input type="text" id="topic" placeholder="Enter topic to discuss..." required>
+            </div>
+            <button type="submit" class="btn">Generate Podcast</button>
+        </form>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="wave">
+            <span></span><span></span><span></span><span></span>
+        </div>
+        <p>Generating your podcast...</p>
+    </div>
+
+    <!-- Result -->
+    <div class="card hidden" id="result">
+        <h3>🎶 Now Playing</h3>
+        <div id="podcastInfo" style="margin-bottom: 10px; opacity: 0.8;"></div>
+
+        <audio id="player" controls class="audio-player"></audio>
+
+        <button id="downloadBtn" class="download-btn">⬇ Download</button>
+
+        <h4>📜 Script</h4>
+        <div id="scriptBox" class="script-box"></div>
+    </div>
+
+    <p id="status"></p>
+</div>
+
+<!-- HISTORY VIEW -->
+<div id="historyView" class="hidden">
+    <div class="header">Your Podcasts 📋</div>
+
+    <div class="card">
+        <div id="historyLoader" class="loader" style="display: block;">
+            <div class="wave">
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <p>Loading history...</p>
+        </div>
+
+        <div id="historyGrid" class="history-grid"></div>
+
+        <p id="historyStatus" class="hidden"></p>
+    </div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+// 🔐 Protect page
+const token = localStorage.getItem("token");
+if (!token) window.location.href = "/login";
+
+// DOM Elements
+const form = document.getElementById("podcastForm");
+const loader = document.getElementById("loader");
+const result = document.getElementById("result");
+const player = document.getElementById("player");
+const scriptBox = document.getElementById("scriptBox");
+const downloadBtn = document.getElementById("downloadBtn");
+const status = document.getElementById("status");
+const podcastInfo = document.getElementById("podcastInfo");
+
+// History elements
+const homeView = document.getElementById("homeView");
+const historyView = document.getElementById("historyView");
+const historyGrid = document.getElementById("historyGrid");
+const historyLoader = document.getElementById("historyLoader");
+const historyStatus = document.getElementById("historyStatus");
+
+let currentAudio = null;
+let currentPodcast = null;
+
+// 🚀 Generate Podcast
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value.trim();
+    const category = document.getElementById("category").value;
+    const topic = document.getElementById("topic").value.trim();
+
+    loader.style.display = "block";
+    result.classList.add("hidden");
+    status.textContent = "";
+
+    try {
+        const res = await fetch("/podcast/generate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ title, category, topic })
+        });
+
+        const data = await res.json();
+        loader.style.display = "none";
+
+        if (data.error) {
+            status.textContent = data.error;
+            return;
+        }
+
+        // Store current podcast data
+        currentPodcast = data;
+        currentAudio = "data:audio/mp3;base64," + data.audio;
+
+        // Set player source
+        player.src = currentAudio;
+
+        // Show podcast info
+        podcastInfo.innerHTML = `<strong>${data.title}</strong> • ${data.category}`;
+
+        // Format script
+        let formatted = "";
+        const lines = data.script.split("\n");
+
+        lines.forEach(line => {
+            line = line.trim();
+            if (!line) return;
+
+            const lower = line.toLowerCase();
+
+            if (lower.startsWith("host:")) {
+                const text = line.replace(/host:/i, "").trim();
+                formatted += `
+                    <div class="host">
+                        <div class="label">🎙️ Host</div>
+                        ${text}
+                    </div>
+                `;
+            } 
+            else if (lower.startsWith("guest:")) {
+                const text = line.replace(/guest:/i, "").trim();
+                formatted += `
+                    <div class="guest">
+                        <div class="label">🎧 Guest</div>
+                        ${text}
+                    </div>
+                `;
+            } 
+        });
+
+        scriptBox.innerHTML = formatted;
+        result.classList.remove("hidden");
+
+    } catch (err) {
+        loader.style.display = "none";
+        status.textContent = "❌ Error generating podcast";
+    }
+});
+
+// ⬇ Download
+downloadBtn.addEventListener("click", () => {
+    if (!currentAudio) return;
+
+    const a = document.createElement("a");
+    a.href = currentAudio;
+    a.download = (currentPodcast?.title || "podcast") + ".mp3";
+    a.click();
+});
+
+// 📋 Show History
+async function showHistory() {
+    homeView.classList.add("hidden");
+    historyView.classList.remove("hidden");
+
+    document.getElementById("btnHome").classList.remove("active");
+    document.getElementById("btnHistory").classList.add("active");
+
+    // Load history if not loaded
+    historyGrid.innerHTML = "";
+    historyLoader.style.display = "block";
+    historyStatus.classList.add("hidden");
+
+    try {
+        const res = await fetch("/podcast/history", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const data = await res.json();
+        historyLoader.style.display = "none";
+
+        if (data.error) {
+            historyStatus.textContent = data.error;
+            historyStatus.classList.remove("hidden");
+            return;
+        }
+
+        if (!data.podcasts || data.podcasts.length === 0) {
+            historyStatus.textContent = "No podcasts found. Create your first one!";
+            historyStatus.classList.remove("hidden");
+            return;
+        }
+
+        // Render history cards
+        data.podcasts.forEach(podcast => {
+            const card = document.createElement("div");
+            card.className = "history-card";
+            card.innerHTML = `
+                <h4>${podcast.title}</h4>
+                <div class="category">${podcast.category}</div>
+                <div class="topic">${podcast.topic}</div>
+                <div class="date">${new Date(podcast.created_at).toLocaleDateString()}</div>
+            `;
+
+            // Load podcast on click
+            card.addEventListener("click", () => {
+                loadPodcast(podcast);
+            });
+
+            historyGrid.appendChild(card);
+        });
+
+    } catch (err) {
+        historyLoader.style.display = "none";
+        historyStatus.textContent = "❌ Error loading history";
+        historyStatus.classList.remove("hidden");
+    }
+}
+
+// 🎵 Load Podcast from History
+async function loadPodcast(podcast) {
+    showHome();
+
+    // Set form values
+    document.getElementById("title").value = podcast.title;
+    document.getElementById("category").value = podcast.category;
+    document.getElementById("topic").value = podcast.topic;
+
+    // Set current podcast data
+    currentPodcast = podcast;
+
+    // Load audio based on stored path
+    // Since audio_path is stored, we need to fetch the audio file
+    try {
+        const res = await fetch("/podcast/audio/" + podcast.id, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        const data = await res.json();
+
+        if (data.audio) {
+            currentAudio = "data:audio/mp3;base64," + data.audio;
+            player.src = currentAudio;
+        }
+
+    } catch (err) {
+        console.error("Error loading audio:", err);
+    }
+
+    // Format script
+    let formatted = "";
+    const lines = podcast.script.split("\n");
+
+    lines.forEach(line => {
+        line = line.trim();
+        if (!line) return;
+
+        const lower = line.toLowerCase();
+
+        if (lower.startsWith("host:")) {
+            const text = line.replace(/host:/i, "").trim();
+            formatted += `
+                <div class="host">
+                    <div class="label">🎙️ Host</div>
+                    ${text}
+                </div>
+            `;
+        } 
+        else if (lower.startsWith("guest:")) {
+            const text = line.replace(/guest:/i, "").trim();
+            formatted += `
+                <div class="guest">
+                    <div class="label">🎧 Guest</div>
+                    ${text}
+                </div>
+            `;
+        } 
+    });
+
+    podcastInfo.innerHTML = `<strong>${podcast.title}</strong> • ${podcast.category}`;
+    scriptBox.innerHTML = formatted;
+    result.classList.remove("hidden");
+}
+
+// 🏠 Show Home
+function showHome() {
+    homeView.classList.remove("hidden");
+    historyView.classList.add("hidden");
+
+    document.getElementById("btnHome").classList.add("active");
+    document.getElementById("btnHistory").classList.remove("active");
+}
+
+// Logout
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+}
+
+</script>
+</body>
+</html>

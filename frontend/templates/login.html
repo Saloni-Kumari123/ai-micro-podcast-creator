@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | AI Podcast</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1DB954, #121212);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+/* Card */
+.card {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 350px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Heading */
+.card h2 {
+    color: #1DB954;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 25px;
+    border: none;
+    background: #1e1e1e;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+input:focus {
+    background: #2a2a2a;
+}
+
+/* Password Box */
+.password-box {
+    position: relative;
+    width: 100%;
+}
+
+.password-box input {
+    padding-right: 45px;
+}
+
+/* Eye Icon */
+#togglePassword {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #ccc;
+    user-select: none;
+}
+
+#togglePassword:hover {
+    color: #1DB954;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 25px;
+    border: none;
+    background: #1DB954;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #1ed760;
+    transform: scale(1.03);
+}
+
+button:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+/* Loader */
+.loader {
+    display: none;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Link */
+.link {
+    margin-top: 20px;
+    color: #ccc;
+}
+
+.link a {
+    color: #1DB954;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>🎧 AI Podcast</h2>
+    <p class="subtitle">Login to your account</p>
+
+    <form id="loginForm">
+
+        <!-- Email -->
+        <input 
+            type="email" 
+            id="email" 
+            placeholder="Email address" 
+            required
+        >
+
+        <!-- Password -->
+        <div class="password-box">
+
+            <input 
+                type="password" 
+                id="password" 
+                placeholder="Password" 
+                required
+            >
+
+            <span id="togglePassword">Show</span>
+
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" id="loginBtn">
+            Login
+        </button>
+
+        <!-- Loader -->
+        <div class="loader" id="loader">
+            ⏳ Logging you in...
+        </div>
+
+    </form>
+    <p class="link">
+        Forgot password, but don't worry...
+    <a href="/forgot-password">Forgot Password </a>
+    </p>
+
+<p class="link">
+    Don't have an account?
+    <a href="/register">Register</a>
+</p>
+
+</div>
+
+<script>
+
+const form = document.getElementById("loginForm");
+const loginBtn = document.getElementById("loginBtn");
+const loader = document.getElementById("loader");
+
+const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+
+/* Show / Hide Password */
+togglePassword.addEventListener("click", () => {
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+        togglePassword.textContent = "Hide";
+
+    } else {
+
+        passwordInput.type = "password";
+        togglePassword.textContent = "Show";
+    }
+});
+
+/* Login Form */
+form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = passwordInput.value;
+
+    loginBtn.disabled = true;
+    loader.style.display = "block";
+
+    try {
+
+        const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            alert(data.error || "Login failed");
+
+            loginBtn.disabled = false;
+            loader.style.display = "none";
+
+            return;
+        }
+
+        // Store Token
+        localStorage.setItem("token", data.token);
+
+        // Redirect
+        window.location.href = "/dashboard";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Something went wrong");
+    }
+
+    loginBtn.disabled = false;
+    loader.style.display = "none";
+});
+
+</script>
+
+</body>
+</html>

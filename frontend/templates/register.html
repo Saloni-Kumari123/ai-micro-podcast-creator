@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register | AI Podcast</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1DB954, #121212);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+/* Card */
+.card {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 20px;
+    width: 350px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    text-align: center;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Heading */
+.card h2 {
+    color: #1DB954;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 25px;
+    border: none;
+    background: #1e1e1e;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+
+input:focus {
+    background: #2a2a2a;
+}
+
+/* Password Box */
+.password-box {
+    position: relative;
+    width: 100%;
+}
+
+.password-box input {
+    padding-right: 55px;
+}
+
+/* Show / Hide Button */
+#togglePassword {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #1DB954;
+    font-size: 14px;
+    font-weight: 600;
+    user-select: none;
+}
+
+/* Password Hint */
+.password-hint {
+    color: #aaa;
+    font-size: 12px;
+    text-align: left;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 25px;
+    border: none;
+    background: #1DB954;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #1ed760;
+    transform: scale(1.03);
+}
+
+/* Link */
+.link {
+    margin-top: 20px;
+    color: #ccc;
+}
+
+.link a {
+    color: #1DB954;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link a:hover {
+    text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>Create Account</h2>
+
+    <p class="subtitle">
+        Start creating AI podcasts today
+    </p>
+
+    <form id="registerForm">
+
+        <!-- Full Name -->
+        <input 
+            type="text" 
+            id="username" 
+            placeholder="Full Name" 
+            required
+        >
+
+        <!-- Email -->
+        <input 
+            type="email" 
+            id="email" 
+            placeholder="Email address" 
+            required
+        >
+
+        <!-- Password -->
+        <div class="password-box">
+
+            <input 
+                type="password" 
+                id="password" 
+                placeholder="Password"
+                required
+                minlength="6"
+                pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{6,}$"
+                title="Password must be at least 6 characters and include at least 1 number and 1 special character"
+            >
+
+            <span id="togglePassword">
+                Show
+            </span>
+
+        </div>
+
+        <!-- Password Hint -->
+        <div class="password-hint">
+            Password must contain:
+            <br>
+            • Minimum 6 characters
+            <br>
+            • At least 1 number
+            <br>
+            • At least 1 special character
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">
+            Create Account
+        </button>
+
+    </form>
+
+    <!-- Login Link -->
+    <p class="link">
+        Already have an account?
+        <a href="/login">Login</a>
+    </p>
+
+</div>
+
+<script>
+
+/* Password Show / Hide */
+
+const passwordInput = document.getElementById("password");
+
+const togglePassword = document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", () => {
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+
+        togglePassword.textContent = "Hide";
+
+    } else {
+
+        passwordInput.type = "password";
+
+        togglePassword.textContent = "Show";
+    }
+});
+
+</script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

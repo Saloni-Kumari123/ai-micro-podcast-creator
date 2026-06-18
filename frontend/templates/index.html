@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Podcast Creator</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#050505;
+    color:white;
+    overflow:hidden;
+    min-height:100vh;
+    position:relative;
+}
+
+/* Background Glow */
+.glow1,
+.glow2{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(140px);
+    opacity:0.25;
+    z-index:-1;
+}
+
+.glow1{
+    width:350px;
+    height:350px;
+    background:#1DB954;
+    top:10%;
+    left:10%;
+}
+
+.glow2{
+    width:300px;
+    height:300px;
+    background:#00bfff;
+    bottom:5%;
+    right:10%;
+}
+
+/* Navbar */
+nav{
+    width:100%;
+    padding:25px 60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:700;
+    color:#1DB954;
+    letter-spacing:1px;
+}
+
+.nav-links a{
+    margin-left:25px;
+    text-decoration:none;
+    color:#bbb;
+    font-size:15px;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:white;
+}
+
+/* Hero */
+.hero{
+    width:100%;
+    min-height:85vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+.hero-content{
+    max-width:850px;
+}
+
+/* Small Tag */
+.tag{
+    display:inline-block;
+    padding:10px 18px;
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:30px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+    color:#ccc;
+    margin-bottom:30px;
+    font-size:14px;
+}
+
+/* Main Heading */
+.hero h1{
+    font-size:72px;
+    line-height:1.15;
+    margin-bottom:25px;
+    font-weight:800;
+}
+
+.hero h1 span{
+    background:linear-gradient(90deg,#1DB954,#00bfff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* Subtitle */
+.hero p{
+    color:#aaa;
+    font-size:20px;
+    line-height:1.7;
+    max-width:700px;
+    margin:auto;
+}
+
+/* Buttons */
+.buttons{
+    margin-top:40px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:15px 30px;
+    border-radius:40px;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:600;
+    transition:0.3s ease;
+}
+
+/* Primary */
+.primary{
+    background:linear-gradient(90deg,#1DB954,#19e68c);
+    color:white;
+    box-shadow:0 0 25px rgba(29,185,84,0.35);
+}
+
+.primary:hover{
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 0 40px rgba(29,185,84,0.5);
+}
+
+/* Secondary */
+.secondary{
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.04);
+    color:white;
+    backdrop-filter:blur(10px);
+}
+
+.secondary:hover{
+    background:rgba(255,255,255,0.08);
+    transform:translateY(-3px);
+}
+
+/* Feature Cards */
+.features{
+    margin-top:60px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.feature-card{
+    width:220px;
+    padding:22px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    transition:0.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(29,185,84,0.5);
+}
+
+.feature-card h3{
+    margin-top:15px;
+    margin-bottom:10px;
+    font-size:18px;
+}
+
+.feature-card p{
+    font-size:14px;
+    color:#aaa;
+    line-height:1.6;
+}
+
+/* Footer */
+footer{
+    position:absolute;
+    bottom:15px;
+    width:100%;
+    text-align:center;
+    color:#666;
+    font-size:13px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+
+    nav{
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:45px;
+    }
+
+    .hero p{
+        font-size:17px;
+    }
+
+    .feature-card{
+        width:100%;
+        max-width:320px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Background Glow -->
+<div class="glow1"></div>
+<div class="glow2"></div>
+
+<!-- Navbar -->
+<nav>
+
+    <div class="logo">
+        AI Podcast
+    </div>
+
+    <div class="nav-links">
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    </div>
+
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            Smart AI-Powered Podcast Generator
+        </div>
+
+        <h1>
+            Turn Any Idea Into a 
+            <span>Professional Podcast</span>
+        </h1>
+
+        <p>
+            Create realistic AI-generated podcast conversations with natural voices, engaging discussions, and background music in seconds.
+        </p>
+
+        <!-- Buttons -->
+        <div class="buttons">
+
+            <a href="/register" class="btn primary">
+                Start Creating
+            </a>
+
+            <a href="/login" class="btn secondary">
+                Login
+            </a>
+
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+
+            <div class="feature-card">
+
+                <h3>
+                    AI Conversations
+                </h3>
+
+                <p>
+                    Generate human-like podcast discussions instantly using AI.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <h3>
+                    Realistic Voices
+                </h3>
+
+                <p>
+                    Convert scripts into realistic podcast audio automatically.
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <h3>
+                    Fast Creation
+                </h3>
+
+                <p>
+                    Create complete podcasts within seconds from any topic.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Footer -->
+<footer>
+    © 2026 AI Podcast Creator • Built with Flask & AI
+</footer>
+
+</body>
+</html>
