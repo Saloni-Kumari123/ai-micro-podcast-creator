@@ -225,3 +225,12 @@ User → Frontend UI → Flask Backend → Ollama Model → Script Generation �
 - No cloud audio storage yet
 - Limited voice customization
 - OTP requires external service setup
+
+### Home Page
+![Home](assets/home.png)
+
+### Podcast Generation
+![Podcast](assets/generate.png)
+
+### Generated Output
+![Output](assets/output.png)
